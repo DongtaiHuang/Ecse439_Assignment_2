@@ -1,0 +1,179 @@
+module CPS2URN;
+create OUT: URN from IN: CPS;
+
+rule System2URN {
+	from
+		c: CPS!CPS
+	to
+		u: URN!URNspec (
+			name <- 'Assignment2_Model',
+			ucmspec <- ucm,
+			urndef <- udef
+		),
+		udef: URN!URNdefinition (
+			urnspec <- u,
+			specDiagrams <- Sequence{map1,
+						map2,
+						map3,
+						map4,
+						map5}
+		),
+		ucm: URN!UCMspec (
+			urnspec <- u,
+			scenarioGroups <- sg,
+			variables <- c.courses
+		),
+		sg: URN!ScenarioGroup (
+			name <- 'ScenarioGroup5',
+			scenarios <- c.students
+		),
+		map1: URN!UCMmap (
+			name <- 'Year 1',
+			urndefinition <- udef
+		),
+		map2: URN!UCMmap (
+			name <- 'Year 2',
+			urndefinition <- udef
+		),
+		map3: URN!UCMmap (
+			name <- 'Year 3',
+			urndefinition <- udef
+		),
+		map4: URN!UCMmap (
+			name <- 'Year 4',
+			urndefinition <- udef
+		),
+		map5: URN!UCMmap (
+			name <- 'Year 5',
+			urndefinition <- udef
+		)
+}
+
+-- RULE 1: Courses WITHOUT Prerequisites (Fully Connected!)
+rule Course2Elements_NoPrereq {
+	from
+		c : CPS!Course (c.prerequisites.oclIsUndefined())
+	to
+		v : URN!Variable ( name <- c.courseNumber, type <- 'boolean' ),
+		
+		-- 1. The Start Node (X = 100)
+		start : URN!StartPoint (
+			name <- c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 100, 
+			y <- c.eContainer().courses->select(crs | crs.suggestedYear = c.suggestedYear)->indexOf(c) * 150,
+			label <- startLabel
+		),
+		startLabel : URN!NodeLabel (),
+		
+		-- 2. The OrFork (X = 200)
+		fork : URN!OrFork (
+			name <- 'OrFork_' + c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 200,
+			y <- start.y
+		),
+		
+		-- 3. The "Taken" EndPoint (X = 300, perfectly horizontal)
+		endTaken : URN!EndPoint (
+			name <- 'taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 300, 
+			y <- start.y 
+		),
+		
+		-- 4. The "Could Be Taken" EndPoint (X = 250, tilted down)
+		endCould : URN!EndPoint (
+			name <- 'could be taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 250, 
+			y <- start.y + 50 
+		),
+		
+		-- 5. Connection: Start -> Fork
+		nc1 : URN!NodeConnection (
+			source <- start, target <- fork,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		),
+		
+		-- 6. Connection: Fork -> Taken (With the course condition!)
+		nc2 : URN!NodeConnection (
+			source <- fork, target <- endTaken,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			condition <- cond1
+		),
+		cond1 : URN!Condition ( label <- c.courseNumber, expression <- c.courseNumber ),
+		
+		-- 7. Connection: Fork -> Could Be Taken (With the 'else' condition!)
+		nc3 : URN!NodeConnection (
+			source <- fork, target <- endCould,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			condition <- cond2
+		),
+		cond2 : URN!Condition ( label <- 'else', expression <- 'else' )
+}
+
+-- RULE 2: Courses WITH Prerequisites
+rule Course2Elements_WithPrereq {
+	from
+		c : CPS!Course (not c.prerequisites.oclIsUndefined())
+	to
+		v : URN!Variable ( name <- c.courseNumber, type <- 'boolean' ),
+		
+		start : URN!StartPoint (
+			name <- c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 100, 
+			y <- c.eContainer().courses->select(crs | crs.suggestedYear = c.suggestedYear)->indexOf(c) * 150,
+			label <- startLabel
+		),
+		startLabel : URN!NodeLabel (),
+		
+		endTaken : URN!EndPoint (
+			name <- 'taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 800, 
+			y <- start.y - 50 -- Stacked for 3 endpoints
+		),
+		
+		endCould : URN!EndPoint (
+			name <- 'could be taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 800, 
+			y <- start.y -- Stacked for 3 endpoints
+		),
+		
+		endCannot : URN!EndPoint (
+			name <- 'cannot be taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 800, 
+			y <- start.y + 50 -- Stacked for 3 endpoints
+		)
+}
+
+rule Student2ScenarioDef {
+	from
+		s: CPS!Student
+	to
+		scen: URN!ScenarioDef (
+			name <- s.name,
+			initializations <- CPS!Course.allInstances() -> collect(c | thisModule.
+					CreateInit(s, c))
+		)
+}
+
+rule CreateInit(student: CPS!Student, course: CPS!Course) {
+	to
+		init: URN!Initialization (
+			-- Check if this specific course is inside the student's takenCourses list
+			value <- if student.takenCourses -> includes(course) then
+					'true'
+				else
+					'false'
+				endif,
+			variable <- course
+		)
+	do {
+		init;
+	}
+}
