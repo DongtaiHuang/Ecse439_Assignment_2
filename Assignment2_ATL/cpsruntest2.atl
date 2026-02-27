@@ -1,0 +1,374 @@
+module CPS2URN;
+create OUT: URN from IN: CPS;
+
+-- =========================================================
+-- Layout constants (increase these to spread diagrams more)
+-- =========================================================
+helper def: ROW_SPACING() : Integer = 260;      -- space between courses (was ~150)
+helper def: BRANCH_SPACING() : Integer = 120;   -- space between prereq branches (was ~45/80)
+
+helper context CPS!Expression def: getCourse() : CPS!Course =
+	if self.eContainer().oclIsKindOf(CPS!Course) then
+		self.eContainer()
+	else
+		self.eContainer().getCourse()
+	endif;
+
+helper context CPS!Expression def: getYOffset() : Integer =
+	if self.eContainer().oclIsKindOf(CPS!Course) then
+		0
+	else if self.eContainer().LHS = self then
+		self.eContainer().getYOffset() - thisModule.BRANCH_SPACING()
+	else
+		self.eContainer().getYOffset() + thisModule.BRANCH_SPACING()
+	endif endif;
+
+rule System2URN {
+	from
+		c: CPS!CPS
+	to
+		u: URN!URNspec (
+			name <- 'Assignment2_Model',
+			ucmspec <- ucm,
+			urndef <- udef
+		),
+		udef: URN!URNdefinition (
+			urnspec <- u,
+			specDiagrams <- Sequence{map1, map2, map3, map4, map5}
+		),
+		ucm: URN!UCMspec (
+			urnspec <- u,
+			scenarioGroups <- sg,
+			-- KEEP exactly as your working version
+			variables <- c.courses
+		),
+		sg: URN!ScenarioGroup (
+			name <- 'ScenarioGroup5',
+			-- KEEP exactly as your working version
+			scenarios <- c.students
+		),
+		map1: URN!UCMmap ( name <- 'Year 1', urndefinition <- udef ),
+		map2: URN!UCMmap ( name <- 'Year 2', urndefinition <- udef ),
+		map3: URN!UCMmap ( name <- 'Year 3', urndefinition <- udef ),
+		map4: URN!UCMmap ( name <- 'Year 4', urndefinition <- udef ),
+		map5: URN!UCMmap ( name <- 'Year 5', urndefinition <- udef )
+}
+
+rule Course2Elements_NoPrereq {
+	from
+		c : CPS!Course (c.prerequisites.oclIsUndefined())
+	to
+		v : URN!Variable ( name <- c.courseNumber, type <- 'boolean' ),
+
+		start : URN!StartPoint (
+			name <- c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 100,
+			y <- c.eContainer().courses
+					->select(crs | crs.suggestedYear = c.suggestedYear)
+					->indexOf(c) * thisModule.ROW_SPACING(),
+			label <- startLabel
+		),
+		startLabel : URN!NodeLabel,
+
+		fork : URN!OrFork (
+			name <- 'OrFork_' + c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 200,
+			y <- start.y
+		),
+
+		endTaken : URN!EndPoint (
+			name <- 'taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 300,
+			y <- start.y,
+			label <- endTakenLabel
+		),
+		endTakenLabel : URN!NodeLabel ( deltaX <- 20, deltaY <- -15 ),
+
+		endCould : URN!EndPoint (
+			name <- 'could be taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 250,
+			y <- start.y + 100,   -- was +50, push down more
+			label <- endCouldLabel
+		),
+		endCouldLabel : URN!NodeLabel,
+
+		nc1 : URN!NodeConnection (
+			source <- start, target <- fork,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		),
+
+		nc2 : URN!NodeConnection (
+			source <- fork, target <- endTaken,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			condition <- cond1
+		),
+		cond1 : URN!Condition (
+			label <- c.courseNumber,
+			expression <- c.courseNumber,
+			deltaX <- 30, deltaY <- 20
+		),
+
+		nc3 : URN!NodeConnection (
+			source <- fork, target <- endCould,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			condition <- cond2
+		),
+		cond2 : URN!Condition (
+			label <- 'else', expression <- 'else',
+			deltaX <- -15, deltaY <- 15
+		)
+}
+
+rule Course2Elements_WithPrereq {
+	from
+		c : CPS!Course (not c.prerequisites.oclIsUndefined())
+	to
+		v : URN!Variable ( name <- c.courseNumber, type <- 'boolean' ),
+
+		start : URN!StartPoint (
+			name <- c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 100,
+			y <- c.eContainer().courses
+					->select(crs | crs.suggestedYear = c.suggestedYear)
+					->indexOf(c) * thisModule.ROW_SPACING(),
+			label <- startLabel
+		),
+		startLabel : URN!NodeLabel,
+
+		finalCheck : URN!OrFork (
+			name <- 'FinalCheck_' + c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 600,
+			y <- start.y
+		),
+
+		endTaken : URN!EndPoint (
+			name <- 'taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 700,
+			y <- start.y,
+			label <- endTakenLabel
+		),
+		endTakenLabel : URN!NodeLabel,
+
+		endCould : URN!EndPoint (
+			name <- 'could be taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 650,
+			y <- start.y + 110,  -- was +50
+			label <- endCouldLabel
+		),
+		endCouldLabel : URN!NodeLabel ( deltaX <- 20, deltaY <- 15 ),
+
+		failCollector : URN!OrJoin (
+			name <- 'FailCollector_' + c.courseNumber,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 350,
+			y <- start.y + 110   -- was +60
+		),
+
+		endCannot : URN!EndPoint (
+			name <- 'cannot be taken',
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
+			x <- 400,
+			y <- start.y + 220,  -- was +110
+			label <- endCannotLabel
+		),
+		endCannotLabel : URN!NodeLabel ( deltaX <- 20, deltaY <- 15 ),
+
+		ncStart2AST : URN!NodeConnection (
+			source <- start,
+			target <- thisModule.resolveTemp(c.prerequisites, 'inNode'),
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		),
+		ncAST2Final : URN!NodeConnection (
+			source <- thisModule.resolveTemp(c.prerequisites, 'outNode'),
+			target <- finalCheck,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		),
+
+		ncFinalTaken : URN!NodeConnection (
+			source <- finalCheck, target <- endTaken, condition <- condTaken,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		),
+		condTaken : URN!Condition (
+			label <- c.courseNumber, expression <- c.courseNumber,
+			deltaX <- 30, deltaY <- -20
+		),
+
+		ncFinalCould : URN!NodeConnection (
+			source <- finalCheck, target <- endCould, condition <- condCould,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		),
+		condCould : URN!Condition (
+			label <- 'else', expression <- 'else',
+			deltaX <- -15, deltaY <- 15
+		),
+
+		ncFail2End : URN!NodeConnection (
+			source <- failCollector, target <- endCannot,
+			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
+		)
+}
+
+rule Atomic2Nodes {
+	from e : CPS!AtomicExpression
+	to
+		inNode : URN!OrFork (
+			name <- 'Check_' + e.course.courseNumber,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString()),
+			x <- 300,
+			y <- e.getCourse().eContainer().courses
+					->select(crs | crs.suggestedYear = e.getCourse().suggestedYear)
+					->indexOf(e.getCourse()) * thisModule.ROW_SPACING()
+					+ e.getYOffset()
+		),
+		outNode : URN!EmptyPoint (
+			name <- 'Pass_' + e.course.courseNumber,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString()),
+			x <- 400,
+			y <- inNode.y
+		),
+
+		ncPass : URN!NodeConnection (
+			source <- inNode, target <- outNode, condition <- condPass,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		condPass : URN!Condition (
+			label <- e.course.courseNumber, expression <- e.course.courseNumber,
+			deltaX <- 15, deltaY <- -15
+		),
+
+		ncFail : URN!NodeConnection (
+			source <- inNode,
+			target <- thisModule.resolveTemp(e.getCourse(), 'failCollector'),
+			condition <- condFail,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		condFail : URN!Condition (
+			label <- 'else', expression <- 'else',
+			deltaX <- -10, deltaY <- 20
+		)
+}
+
+rule CompoundAnd2Nodes {
+	from e : CPS!CompoundExpression (e.operator = #AND)
+	to
+		inNode : URN!AndFork (
+			name <- 'AndSplit',
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString()),
+			x <- 200,
+			y <- e.getCourse().eContainer().courses
+					->select(crs | crs.suggestedYear = e.getCourse().suggestedYear)
+					->indexOf(e.getCourse()) * thisModule.ROW_SPACING()
+					+ e.getYOffset()
+		),
+		outNode : URN!AndJoin (
+			name <- 'AndMerge',
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString()),
+			x <- 500,
+			y <- inNode.y
+		),
+		ncLHS_In : URN!NodeConnection (
+			source <- inNode, target <- thisModule.resolveTemp(e.LHS, 'inNode'),
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		ncLHS_Out : URN!NodeConnection (
+			source <- thisModule.resolveTemp(e.LHS, 'outNode'), target <- outNode,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		ncRHS_In : URN!NodeConnection (
+			source <- inNode, target <- thisModule.resolveTemp(e.RHS, 'inNode'),
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		ncRHS_Out : URN!NodeConnection (
+			source <- thisModule.resolveTemp(e.RHS, 'outNode'), target <- outNode,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		)
+}
+
+rule CompoundOr2Nodes {
+	from e : CPS!CompoundExpression (e.operator = #OR)
+	to
+		inNode : URN!OrFork (
+			name <- 'OrSplit',
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString()),
+			x <- 200,
+			y <- e.getCourse().eContainer().courses
+					->select(crs | crs.suggestedYear = e.getCourse().suggestedYear)
+					->indexOf(e.getCourse()) * thisModule.ROW_SPACING()
+					+ e.getYOffset()
+		),
+		outNode : URN!OrJoin (
+			name <- 'OrMerge',
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString()),
+			x <- 500,
+			y <- inNode.y
+		),
+		ncLHS_In : URN!NodeConnection (
+			source <- inNode, target <- thisModule.resolveTemp(e.LHS, 'inNode'),
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		ncLHS_Out : URN!NodeConnection (
+			source <- thisModule.resolveTemp(e.LHS, 'outNode'), target <- outNode,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		ncRHS_In : URN!NodeConnection (
+			source <- inNode, target <- thisModule.resolveTemp(e.RHS, 'inNode'),
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		),
+		ncRHS_Out : URN!NodeConnection (
+			source <- thisModule.resolveTemp(e.RHS, 'outNode'), target <- outNode,
+			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(),
+						'map' + e.getCourse().suggestedYear.toString())
+		)
+}
+
+rule Student2ScenarioDef {
+	from
+		s: CPS!Student
+	to
+		scen: URN!ScenarioDef (
+			name <- s.name,
+			initializations <- CPS!Course.allInstances()->collect(c | thisModule.CreateInit(s, c)),
+			startPoints <- CPS!Course.allInstances()->collect(c | thisModule.CreateScenarioStart(c))
+		)
+}
+
+rule CreateScenarioStart(course: CPS!Course) {
+	to
+		ssp: URN!ScenarioStartPoint (
+			enabled <- true,
+			startPoint <- thisModule.resolveTemp(course, 'start')
+		)
+	do { ssp; }
+}
+
+rule CreateInit(student: CPS!Student, course: CPS!Course) {
+	to
+		init: URN!Initialization (
+			value <- if student.takenCourses->includes(course) then 'true' else 'false' endif,
+			variable <- course
+		)
+	do { init; }
+}
