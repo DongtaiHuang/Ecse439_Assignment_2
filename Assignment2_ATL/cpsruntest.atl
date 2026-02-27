@@ -8,14 +8,14 @@ helper context CPS!Expression def: getCourse() : CPS!Course =
 		self.eContainer().getCourse()
 	endif;
 
--- Recursively calculates Y-offsets to prevent overlapping branches!
+
 helper context CPS!Expression def: getYOffset() : Integer =
 	if self.eContainer().oclIsKindOf(CPS!Course) then
-		0 -- Root of the tree stays in the center
+		0 
 	else if self.eContainer().LHS = self then
-		self.eContainer().getYOffset() - 45 -- Push LHS branches up
+		self.eContainer().getYOffset() - 45 
 	else
-		self.eContainer().getYOffset() + 45 -- Push RHS branches down
+		self.eContainer().getYOffset() + 45 
 	endif endif;
 
 rule System2URN {
@@ -66,14 +66,14 @@ rule System2URN {
 		)
 }
 
--- RULE 1: Courses WITHOUT Prerequisites (Fully Connected & Labeled!)
+
 rule Course2Elements_NoPrereq {
 	from
 		c : CPS!Course (c.prerequisites.oclIsUndefined())
 	to
 		v : URN!Variable ( name <- c.courseNumber, type <- 'boolean' ),
 		
-		-- 1. The Start Node
+	
 		start : URN!StartPoint (
 			name <- c.courseNumber,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -83,15 +83,14 @@ rule Course2Elements_NoPrereq {
 		),
 		startLabel : URN!NodeLabel, -- Nudge start label top-left
 		
-		-- 2. The OrFork
+	
 		fork : URN!OrFork (
 			name <- 'OrFork_' + c.courseNumber,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
 			x <- 200,
 			y <- start.y
 		),
-		
-		-- 3. The "Taken" EndPoint & Label
+	
 		endTaken : URN!EndPoint (
 			name <- 'taken',
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -101,7 +100,7 @@ rule Course2Elements_NoPrereq {
 		),
 		endTakenLabel : URN!NodeLabel ( deltaX <- 20, deltaY <- -15 ),
 		
-		-- 4. The "Could Be Taken" EndPoint & Label
+	
 		endCould : URN!EndPoint (
 			name <- 'could be taken',
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -111,13 +110,13 @@ rule Course2Elements_NoPrereq {
 		),
 		endCouldLabel : URN!NodeLabel,
 		
-		-- 5. Connection: Start -> Fork
+
 		nc1 : URN!NodeConnection (
 			source <- start, target <- fork,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
 		),
 		
-		-- 6. Connection: Fork -> Taken (With Offset Condition!)
+
 		nc2 : URN!NodeConnection (
 			source <- fork, target <- endTaken,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -129,7 +128,7 @@ rule Course2Elements_NoPrereq {
 			deltaX <- 30, deltaY <- 20 -- Push text up and right so it clears the line
 		),
 		
-		-- 7. Connection: Fork -> Could Be Taken (With Offset Condition!)
+		
 		nc3 : URN!NodeConnection (
 			source <- fork, target <- endCould,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -141,14 +140,13 @@ rule Course2Elements_NoPrereq {
 		)
 }
 
--- RULE 2: Courses WITH Prerequisites (Fully Routed & Visually Polished!)
 rule Course2Elements_WithPrereq {
 	from
 		c : CPS!Course (not c.prerequisites.oclIsUndefined())
 	to
 		v : URN!Variable ( name <- c.courseNumber, type <- 'boolean' ),
 		
-		-- 1. Start Node
+
 		start : URN!StartPoint (
 			name <- c.courseNumber,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -157,14 +155,13 @@ rule Course2Elements_WithPrereq {
 		),
 		startLabel : URN!NodeLabel,
 		
-		-- 2. Final Course Check (Spawns after the AST finishes)
+
 		finalCheck : URN!OrFork (
 			name <- 'FinalCheck_' + c.courseNumber,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
 			x <- 600, y <- start.y
 		),
-		
-		-- 3. "Taken" EndPoint (Horizontal, matching NoPrereq)
+
 		endTaken : URN!EndPoint (
 			name <- 'taken',
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -172,8 +169,7 @@ rule Course2Elements_WithPrereq {
 			label <- endTakenLabel
 		),
 		endTakenLabel : URN!NodeLabel,
-		
-		-- 4. "Could Be Taken" EndPoint (Tilted down, matching NoPrereq)
+
 		endCould : URN!EndPoint (
 			name <- 'could be taken',
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -182,14 +178,14 @@ rule Course2Elements_WithPrereq {
 		),
 		endCouldLabel : URN!NodeLabel ( deltaX <- 20, deltaY <- 15 ),
 
-		-- 5. The Failure Collector (Pulled into the middle of the AST, lower Y)
+
 		failCollector : URN!OrJoin (
 			name <- 'FailCollector_' + c.courseNumber,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
 			x <- 350, y <- start.y + 60 
 		),
 		
-		-- 6. "Cannot Be Taken" EndPoint (Tilted down from the Fail Collector)
+
 		endCannot : URN!EndPoint (
 			name <- 'cannot be taken',
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString()),
@@ -198,7 +194,7 @@ rule Course2Elements_WithPrereq {
 		),
 		endCannotLabel : URN!NodeLabel ( deltaX <- 20, deltaY <- 15 ),
 		
-		-- CONNECTIONS
+
 		ncStart2AST : URN!NodeConnection (
 			source <- start, target <- thisModule.resolveTemp(c.prerequisites, 'inNode'),
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
@@ -208,32 +204,32 @@ rule Course2Elements_WithPrereq {
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
 		),
 		
-		-- Final Check -> Taken
+	
 		ncFinalTaken : URN!NodeConnection (
 			source <- finalCheck, target <- endTaken, condition <- condTaken,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
 		),
 		condTaken : URN!Condition ( label <- c.courseNumber , expression <- c.courseNumber, deltaX <- 30, deltaY <- -20 ),
 		
-		-- Final Check -> Could Be Taken
+
 		ncFinalCould : URN!NodeConnection (
 			source <- finalCheck, target <- endCould, condition <- condCould,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
 		),
 		condCould : URN!Condition ( label <- 'else', expression <- 'else', deltaX <- -15, deltaY <- 15 ),
 		
-		-- Fail Collector -> Cannot Be Taken
+	
 		ncFail2End : URN!NodeConnection (
 			source <- failCollector, target <- endCannot,
 			diagram <- thisModule.resolveTemp(c.eContainer(), 'map' + c.suggestedYear.toString())
 		)
 }
 
--- 1. The Atomic Node (The Prerequisite Check)
+
 rule Atomic2Nodes {
 	from e : CPS!AtomicExpression
 	to
-		-- Now an OrFork so it can evaluate Yes/No!
+
 		inNode : URN!OrFork (
 			name <- 'Check_' + e.course.courseNumber,
 			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(), 'map' + e.getCourse().suggestedYear.toString()),
@@ -244,14 +240,14 @@ rule Atomic2Nodes {
 			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(), 'map' + e.getCourse().suggestedYear.toString()),
 			x <- 400, y <- inNode.y
 		),
-		-- Success Branch (Flows to outNode)
+
 		ncPass : URN!NodeConnection (
 			source <- inNode, target <- outNode, condition <- condPass,
 			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(), 'map' + e.getCourse().suggestedYear.toString())
 		),
 		condPass : URN!Condition ( label <- e.course.courseNumber, expression <- e.course.courseNumber, deltaX <- 15, deltaY <- -15 ),
 		
-		-- Failure Branch (Diverts to the Course's FailCollector!)
+
 		ncFail : URN!NodeConnection (
 			source <- inNode, target <- thisModule.resolveTemp(e.getCourse(), 'failCollector'), condition <- condFail,
 			diagram <- thisModule.resolveTemp(e.getCourse().eContainer(), 'map' + e.getCourse().suggestedYear.toString())
@@ -259,7 +255,7 @@ rule Atomic2Nodes {
 		condFail : URN!Condition ( label <- 'else', expression <- 'else', deltaX <- -10, deltaY <- 20 )
 }
 
--- 2. The AND Node (Parallel Branches)
+
 rule CompoundAnd2Nodes {
 	from e : CPS!CompoundExpression (e.operator = #AND)
 	to
@@ -289,7 +285,7 @@ rule CompoundAnd2Nodes {
 		)
 }
 
--- 3. The OR Node (Alternative Branches)
+
 rule CompoundOr2Nodes {
 	from e : CPS!CompoundExpression (e.operator = #OR)
 	to
@@ -327,10 +323,10 @@ rule Student2ScenarioDef {
 		scen: URN!ScenarioDef (
 			name <- s.name,
 			
-			-- 1. Set the variables (State)
+		
 			initializations <- CPS!Course.allInstances() -> collect(c | thisModule.CreateInit(s, c)),
 			
-			-- 2. Trigger the start dots (Execution)
+	
 			startPoints <- CPS!Course.allInstances() -> collect(c | thisModule.CreateScenarioStart(c))
 		)
 }
@@ -340,8 +336,8 @@ rule CreateScenarioStart(course: CPS!Course) {
 	to
 		ssp: URN!ScenarioStartPoint (
 			enabled <- true,
-			-- ATL Magic: This looks up the 'start' node regardless of whether 
-			-- the course had prerequisites or not!
+	
+		
 			startPoint <- thisModule.resolveTemp(course, 'start')
 		)
 	do {
