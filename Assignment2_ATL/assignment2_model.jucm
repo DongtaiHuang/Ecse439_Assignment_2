@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<urn:URNspec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ucm.map="http:///ucm/map.ecore" xmlns:urn="http:///urn.ecore" name="Assignment2_Model">
+  <ucmspec>
+    <scenarioGroups name="ScenarioGroup5">
+      <scenarios name="Jo">
+        <initializations value="true" variable="//@ucmspec/@variables.0"/>
+        <initializations value="true" variable="//@ucmspec/@variables.1"/>
+        <initializations value="false" variable="//@ucmspec/@variables.2"/>
+        <initializations value="false" variable="//@ucmspec/@variables.3"/>
+        <initializations value="false" variable="//@ucmspec/@variables.4"/>
+        <initializations value="false" variable="//@ucmspec/@variables.5"/>
+        <initializations value="false" variable="//@ucmspec/@variables.6"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.0"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.4"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.8"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.0"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.6"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.12"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.18"/>
+      </scenarios>
+      <scenarios name="Jane">
+        <initializations value="true" variable="//@ucmspec/@variables.0"/>
+        <initializations value="false" variable="//@ucmspec/@variables.1"/>
+        <initializations value="false" variable="//@ucmspec/@variables.2"/>
+        <initializations value="false" variable="//@ucmspec/@variables.3"/>
+        <initializations value="false" variable="//@ucmspec/@variables.4"/>
+        <initializations value="false" variable="//@ucmspec/@variables.5"/>
+        <initializations value="false" variable="//@ucmspec/@variables.6"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.0"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.4"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.8"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.0"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.6"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.12"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.18"/>
+      </scenarios>
+      <scenarios name="Bob">
+        <initializations value="true" variable="//@ucmspec/@variables.0"/>
+        <initializations value="true" variable="//@ucmspec/@variables.1"/>
+        <initializations value="false" variable="//@ucmspec/@variables.2"/>
+        <initializations value="true" variable="//@ucmspec/@variables.3"/>
+        <initializations value="false" variable="//@ucmspec/@variables.4"/>
+        <initializations value="false" variable="//@ucmspec/@variables.5"/>
+        <initializations value="false" variable="//@ucmspec/@variables.6"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.0"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.4"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.0/@nodes.8"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.0"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.6"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.12"/>
+        <startPoints enabled="true" startPoint="//@urndef/@specDiagrams.1/@nodes.18"/>
+      </scenarios>
+    </scenarioGroups>
+    <variables name="SE202"/>
+    <variables name="SE250"/>
+    <variables name="SE223"/>
+    <variables name="SE305"/>
+    <variables name="SE306"/>
+    <variables name="SE315"/>
+    <variables name="SE318"/>
+  </ucmspec>
+  <urndef>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="Year 1">
+      <nodes xsi:type="ucm.map:StartPoint" name="SE202" x="100" y="250" succ="//@urndef/@specDiagrams.0/@connections.0" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.0 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.0 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.0">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="OrFork_SE202" x="300" y="250" succ="//@urndef/@specDiagrams.0/@connections.1 //@urndef/@specDiagrams.0/@connections.2" pred="//@urndef/@specDiagrams.0/@connections.0"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="500" y="250" pred="//@urndef/@specDiagrams.0/@connections.1">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="400" y="350" pred="//@urndef/@specDiagrams.0/@connections.2">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:StartPoint" name="SE250" x="100" y="500" succ="//@urndef/@specDiagrams.0/@connections.3" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.1 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.1 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.1">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="OrFork_SE250" x="300" y="500" succ="//@urndef/@specDiagrams.0/@connections.4 //@urndef/@specDiagrams.0/@connections.5" pred="//@urndef/@specDiagrams.0/@connections.3"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="500" y="500" pred="//@urndef/@specDiagrams.0/@connections.4">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="400" y="600" pred="//@urndef/@specDiagrams.0/@connections.5">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:StartPoint" name="SE223" x="100" y="750" succ="//@urndef/@specDiagrams.0/@connections.6" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.2 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.2 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.2">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="FinalCheck_SE223" x="1100" y="750" succ="//@urndef/@specDiagrams.0/@connections.8 //@urndef/@specDiagrams.0/@connections.9" pred="//@urndef/@specDiagrams.0/@connections.7"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="1300" y="750" pred="//@urndef/@specDiagrams.0/@connections.8">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="1200" y="850" pred="//@urndef/@specDiagrams.0/@connections.9">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrJoin" name="FailCollector_SE223" x="500" y="870" succ="//@urndef/@specDiagrams.0/@connections.10" pred="//@urndef/@specDiagrams.0/@connections.12"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="cannot be taken" x="650" y="920" pred="//@urndef/@specDiagrams.0/@connections.10">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE250" x="300" y="750" succ="//@urndef/@specDiagrams.0/@connections.11 //@urndef/@specDiagrams.0/@connections.12" pred="//@urndef/@specDiagrams.0/@connections.6"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE250" x="400" y="750" succ="//@urndef/@specDiagrams.0/@connections.7" pred="//@urndef/@specDiagrams.0/@connections.11"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.0" target="//@urndef/@specDiagrams.0/@nodes.1"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.1" target="//@urndef/@specDiagrams.0/@nodes.2">
+        <condition label="SE202" expression="SE202"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.1" target="//@urndef/@specDiagrams.0/@nodes.3">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.4" target="//@urndef/@specDiagrams.0/@nodes.5"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.5" target="//@urndef/@specDiagrams.0/@nodes.6">
+        <condition label="SE250" expression="SE250"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.5" target="//@urndef/@specDiagrams.0/@nodes.7">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.8" target="//@urndef/@specDiagrams.0/@nodes.14"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.15" target="//@urndef/@specDiagrams.0/@nodes.9"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.9" target="//@urndef/@specDiagrams.0/@nodes.10">
+        <condition label="SE223" expression="SE223"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.9" target="//@urndef/@specDiagrams.0/@nodes.11">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.12" target="//@urndef/@specDiagrams.0/@nodes.13"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.14" target="//@urndef/@specDiagrams.0/@nodes.15">
+        <condition label="SE250" expression="SE250"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.0/@nodes.14" target="//@urndef/@specDiagrams.0/@nodes.12">
+        <condition label="else" expression="else"/>
+      </connections>
+    </specDiagrams>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="Year 2">
+      <nodes xsi:type="ucm.map:StartPoint" name="SE305" x="100" y="250" succ="//@urndef/@specDiagrams.1/@connections.0" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.3 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.3 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.3">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="FinalCheck_SE305" x="1100" y="250" succ="//@urndef/@specDiagrams.1/@connections.2 //@urndef/@specDiagrams.1/@connections.3" pred="//@urndef/@specDiagrams.1/@connections.1"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="1300" y="250" pred="//@urndef/@specDiagrams.1/@connections.2">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="1200" y="350" pred="//@urndef/@specDiagrams.1/@connections.3">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrJoin" name="FailCollector_SE305" x="500" y="370" succ="//@urndef/@specDiagrams.1/@connections.4" pred="//@urndef/@specDiagrams.1/@connections.21 //@urndef/@specDiagrams.1/@connections.23"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="cannot be taken" x="650" y="420" pred="//@urndef/@specDiagrams.1/@connections.4">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:StartPoint" name="SE306" x="100" y="500" succ="//@urndef/@specDiagrams.1/@connections.5" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.4 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.4 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.4">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="FinalCheck_SE306" x="1100" y="500" succ="//@urndef/@specDiagrams.1/@connections.7 //@urndef/@specDiagrams.1/@connections.8" pred="//@urndef/@specDiagrams.1/@connections.6"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="1300" y="500" pred="//@urndef/@specDiagrams.1/@connections.7">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="1200" y="600" pred="//@urndef/@specDiagrams.1/@connections.8">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrJoin" name="FailCollector_SE306" x="500" y="620" succ="//@urndef/@specDiagrams.1/@connections.9" pred="//@urndef/@specDiagrams.1/@connections.25"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="cannot be taken" x="650" y="670" pred="//@urndef/@specDiagrams.1/@connections.9">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:StartPoint" name="SE315" x="100" y="750" succ="//@urndef/@specDiagrams.1/@connections.10" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.5 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.5 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.5">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="FinalCheck_SE315" x="1100" y="750" succ="//@urndef/@specDiagrams.1/@connections.12 //@urndef/@specDiagrams.1/@connections.13" pred="//@urndef/@specDiagrams.1/@connections.11"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="1300" y="750" pred="//@urndef/@specDiagrams.1/@connections.12">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="1200" y="850" pred="//@urndef/@specDiagrams.1/@connections.13">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrJoin" name="FailCollector_SE315" x="500" y="870" succ="//@urndef/@specDiagrams.1/@connections.14" pred="//@urndef/@specDiagrams.1/@connections.27 //@urndef/@specDiagrams.1/@connections.29 //@urndef/@specDiagrams.1/@connections.31"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="cannot be taken" x="650" y="920" pred="//@urndef/@specDiagrams.1/@connections.14">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:StartPoint" name="SE318" x="100" y="1000" succ="//@urndef/@specDiagrams.1/@connections.15" scenarioStartPoints="//@ucmspec/@scenarioGroups.0/@scenarios.0/@startPoints.6 //@ucmspec/@scenarioGroups.0/@scenarios.1/@startPoints.6 //@ucmspec/@scenarioGroups.0/@scenarios.2/@startPoints.6">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="FinalCheck_SE318" x="1100" y="1000" succ="//@urndef/@specDiagrams.1/@connections.17 //@urndef/@specDiagrams.1/@connections.18" pred="//@urndef/@specDiagrams.1/@connections.16"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="taken" x="1300" y="1000" pred="//@urndef/@specDiagrams.1/@connections.17">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="could be taken" x="1200" y="1100" pred="//@urndef/@specDiagrams.1/@connections.18">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrJoin" name="FailCollector_SE318" x="500" y="1120" succ="//@urndef/@specDiagrams.1/@connections.19" pred="//@urndef/@specDiagrams.1/@connections.33 //@urndef/@specDiagrams.1/@connections.35"/>
+      <nodes xsi:type="ucm.map:EndPoint" name="cannot be taken" x="650" y="1170" pred="//@urndef/@specDiagrams.1/@connections.19">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE250" x="300" y="295" succ="//@urndef/@specDiagrams.1/@connections.20 //@urndef/@specDiagrams.1/@connections.21" pred="//@urndef/@specDiagrams.1/@connections.38"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE250" x="400" y="295" succ="//@urndef/@specDiagrams.1/@connections.39" pred="//@urndef/@specDiagrams.1/@connections.20"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE202" x="300" y="205" succ="//@urndef/@specDiagrams.1/@connections.22 //@urndef/@specDiagrams.1/@connections.23" pred="//@urndef/@specDiagrams.1/@connections.36"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE202" x="400" y="205" succ="//@urndef/@specDiagrams.1/@connections.37" pred="//@urndef/@specDiagrams.1/@connections.22"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE223" x="300" y="500" succ="//@urndef/@specDiagrams.1/@connections.24 //@urndef/@specDiagrams.1/@connections.25" pred="//@urndef/@specDiagrams.1/@connections.5"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE223" x="400" y="500" succ="//@urndef/@specDiagrams.1/@connections.6" pred="//@urndef/@specDiagrams.1/@connections.24"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE306" x="300" y="840" succ="//@urndef/@specDiagrams.1/@connections.26 //@urndef/@specDiagrams.1/@connections.27" pred="//@urndef/@specDiagrams.1/@connections.50"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE306" x="400" y="840" succ="//@urndef/@specDiagrams.1/@connections.51" pred="//@urndef/@specDiagrams.1/@connections.26"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE305" x="300" y="750" succ="//@urndef/@specDiagrams.1/@connections.28 //@urndef/@specDiagrams.1/@connections.29" pred="//@urndef/@specDiagrams.1/@connections.48"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE305" x="400" y="750" succ="//@urndef/@specDiagrams.1/@connections.49" pred="//@urndef/@specDiagrams.1/@connections.28"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE223" x="300" y="705" succ="//@urndef/@specDiagrams.1/@connections.30 //@urndef/@specDiagrams.1/@connections.31" pred="//@urndef/@specDiagrams.1/@connections.40"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE223" x="400" y="705" succ="//@urndef/@specDiagrams.1/@connections.41" pred="//@urndef/@specDiagrams.1/@connections.30"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE305" x="300" y="1045" succ="//@urndef/@specDiagrams.1/@connections.32 //@urndef/@specDiagrams.1/@connections.33" pred="//@urndef/@specDiagrams.1/@connections.46"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE305" x="400" y="1045" succ="//@urndef/@specDiagrams.1/@connections.47" pred="//@urndef/@specDiagrams.1/@connections.32"/>
+      <nodes xsi:type="ucm.map:OrFork" name="Check_SE223" x="300" y="955" succ="//@urndef/@specDiagrams.1/@connections.34 //@urndef/@specDiagrams.1/@connections.35" pred="//@urndef/@specDiagrams.1/@connections.44"/>
+      <nodes xsi:type="ucm.map:EmptyPoint" name="Pass_SE223" x="400" y="955" succ="//@urndef/@specDiagrams.1/@connections.45" pred="//@urndef/@specDiagrams.1/@connections.34"/>
+      <nodes xsi:type="ucm.map:AndFork" name="AndSplit" x="200" y="250" succ="//@urndef/@specDiagrams.1/@connections.36 //@urndef/@specDiagrams.1/@connections.38" pred="//@urndef/@specDiagrams.1/@connections.0"/>
+      <nodes xsi:type="ucm.map:AndJoin" name="AndMerge" x="900" y="250" succ="//@urndef/@specDiagrams.1/@connections.1" pred="//@urndef/@specDiagrams.1/@connections.37 //@urndef/@specDiagrams.1/@connections.39"/>
+      <nodes xsi:type="ucm.map:AndFork" name="AndSplit" x="200" y="750" succ="//@urndef/@specDiagrams.1/@connections.40 //@urndef/@specDiagrams.1/@connections.42" pred="//@urndef/@specDiagrams.1/@connections.10"/>
+      <nodes xsi:type="ucm.map:AndJoin" name="AndMerge" x="900" y="750" succ="//@urndef/@specDiagrams.1/@connections.11" pred="//@urndef/@specDiagrams.1/@connections.41 //@urndef/@specDiagrams.1/@connections.43"/>
+      <nodes xsi:type="ucm.map:AndFork" name="AndSplit" x="200" y="1000" succ="//@urndef/@specDiagrams.1/@connections.44 //@urndef/@specDiagrams.1/@connections.46" pred="//@urndef/@specDiagrams.1/@connections.15"/>
+      <nodes xsi:type="ucm.map:AndJoin" name="AndMerge" x="900" y="1000" succ="//@urndef/@specDiagrams.1/@connections.16" pred="//@urndef/@specDiagrams.1/@connections.45 //@urndef/@specDiagrams.1/@connections.47"/>
+      <nodes xsi:type="ucm.map:OrFork" name="OrSplit" x="200" y="795" succ="//@urndef/@specDiagrams.1/@connections.48 //@urndef/@specDiagrams.1/@connections.50" pred="//@urndef/@specDiagrams.1/@connections.42"/>
+      <nodes xsi:type="ucm.map:OrJoin" name="OrMerge" x="900" y="795" succ="//@urndef/@specDiagrams.1/@connections.43" pred="//@urndef/@specDiagrams.1/@connections.49 //@urndef/@specDiagrams.1/@connections.51"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.0" target="//@urndef/@specDiagrams.1/@nodes.40"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.41" target="//@urndef/@specDiagrams.1/@nodes.1"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.1" target="//@urndef/@specDiagrams.1/@nodes.2">
+        <condition label="SE305" expression="SE305"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.1" target="//@urndef/@specDiagrams.1/@nodes.3">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.4" target="//@urndef/@specDiagrams.1/@nodes.5"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.6" target="//@urndef/@specDiagrams.1/@nodes.28"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.29" target="//@urndef/@specDiagrams.1/@nodes.7"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.7" target="//@urndef/@specDiagrams.1/@nodes.8">
+        <condition label="SE306" expression="SE306"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.7" target="//@urndef/@specDiagrams.1/@nodes.9">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.10" target="//@urndef/@specDiagrams.1/@nodes.11"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.12" target="//@urndef/@specDiagrams.1/@nodes.42"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.43" target="//@urndef/@specDiagrams.1/@nodes.13"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.13" target="//@urndef/@specDiagrams.1/@nodes.14">
+        <condition label="SE315" expression="SE315"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.13" target="//@urndef/@specDiagrams.1/@nodes.15">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.16" target="//@urndef/@specDiagrams.1/@nodes.17"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.18" target="//@urndef/@specDiagrams.1/@nodes.44"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.45" target="//@urndef/@specDiagrams.1/@nodes.19"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.19" target="//@urndef/@specDiagrams.1/@nodes.20">
+        <condition label="SE318" expression="SE318"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.19" target="//@urndef/@specDiagrams.1/@nodes.21">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.22" target="//@urndef/@specDiagrams.1/@nodes.23"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.24" target="//@urndef/@specDiagrams.1/@nodes.25">
+        <condition label="SE250" expression="SE250"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.24" target="//@urndef/@specDiagrams.1/@nodes.4">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.26" target="//@urndef/@specDiagrams.1/@nodes.27">
+        <condition label="SE202" expression="SE202"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.26" target="//@urndef/@specDiagrams.1/@nodes.4">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.28" target="//@urndef/@specDiagrams.1/@nodes.29">
+        <condition label="SE223" expression="SE223"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.28" target="//@urndef/@specDiagrams.1/@nodes.10">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.30" target="//@urndef/@specDiagrams.1/@nodes.31">
+        <condition label="SE306" expression="SE306"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.30" target="//@urndef/@specDiagrams.1/@nodes.16">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.32" target="//@urndef/@specDiagrams.1/@nodes.33">
+        <condition label="SE305" expression="SE305"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.32" target="//@urndef/@specDiagrams.1/@nodes.16">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.34" target="//@urndef/@specDiagrams.1/@nodes.35">
+        <condition label="SE223" expression="SE223"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.34" target="//@urndef/@specDiagrams.1/@nodes.16">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.36" target="//@urndef/@specDiagrams.1/@nodes.37">
+        <condition label="SE305" expression="SE305"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.36" target="//@urndef/@specDiagrams.1/@nodes.22">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.38" target="//@urndef/@specDiagrams.1/@nodes.39">
+        <condition label="SE223" expression="SE223"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.38" target="//@urndef/@specDiagrams.1/@nodes.22">
+        <condition label="else" expression="else"/>
+      </connections>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.40" target="//@urndef/@specDiagrams.1/@nodes.26"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.27" target="//@urndef/@specDiagrams.1/@nodes.41"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.40" target="//@urndef/@specDiagrams.1/@nodes.24"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.25" target="//@urndef/@specDiagrams.1/@nodes.41"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.42" target="//@urndef/@specDiagrams.1/@nodes.34"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.35" target="//@urndef/@specDiagrams.1/@nodes.43"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.42" target="//@urndef/@specDiagrams.1/@nodes.46"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.47" target="//@urndef/@specDiagrams.1/@nodes.43"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.44" target="//@urndef/@specDiagrams.1/@nodes.38"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.39" target="//@urndef/@specDiagrams.1/@nodes.45"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.44" target="//@urndef/@specDiagrams.1/@nodes.36"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.37" target="//@urndef/@specDiagrams.1/@nodes.45"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.46" target="//@urndef/@specDiagrams.1/@nodes.32"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.33" target="//@urndef/@specDiagrams.1/@nodes.47"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.46" target="//@urndef/@specDiagrams.1/@nodes.30"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="//@urndef/@specDiagrams.1/@nodes.31" target="//@urndef/@specDiagrams.1/@nodes.47"/>
+    </specDiagrams>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="Year 3"/>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="Year 4"/>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="Year 5"/>
+  </urndef>
+</urn:URNspec>
